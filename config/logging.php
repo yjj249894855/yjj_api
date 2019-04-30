@@ -42,13 +42,26 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/laravel2.log'),
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs/laravelaa.log'),
+            'level' => 'debug',
+            'days' => 14,
+        ],
+
+        'info' => [
+            'driver' => 'daily',
+            'path' => '/usr/local/var/log/laravel_api/info.log',
+            'level' => 'debug',
+            'days' => 14,
+        ],
+        'catch_error' => [
+            'driver' => 'daily',
+            'path' => '/usr/local/var/log/laravel_api/catch_error.log',
             'level' => 'debug',
             'days' => 14,
         ],
