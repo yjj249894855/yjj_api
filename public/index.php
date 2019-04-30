@@ -36,6 +36,10 @@ require __DIR__.'/../vendor/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
+//初始化环境变量
+$env = getenv('APP_ENV') ? getenv('APP_ENV') : 'local';
+define('ENV', $env);
+$app->loadEnvironmentFrom('/config/env/.env.' . ENV);
 
 /*
 |--------------------------------------------------------------------------
