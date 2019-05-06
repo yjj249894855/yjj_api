@@ -8,7 +8,6 @@ use App;
 use App\Modules\YjjTest\Exception\EmployeeException;
 
 
-
 /**
  * 测试
  * @author yjj
@@ -18,7 +17,10 @@ class DateController
 
     public function demo1()
     {
-
+        $file_la = env('LARAVEL_URL' ,'');
+        $ddww = env('DB_DATABASE');
+        var_dump($file_la);
+        var_dump($ddww);die;
         try {
             throw EmployeeException::error(2000104);
             $aa = date("Y/m/d H:i:s");
@@ -27,7 +29,7 @@ class DateController
         } catch (\Exception $e) {
             LogUtils::catch_error($e);
         }
-        die;
+        //die;
         try {
             $aa = date("Y/m/d H:i:s");
             $cc = storage_path('logs/laravel2.log');
@@ -52,7 +54,8 @@ class DateController
         }
     }
 
-    public function demo22(){
+    public function demo22()
+    {
         try {
             //code...
         } catch (\Throwable $th) {

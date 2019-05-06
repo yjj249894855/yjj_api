@@ -42,13 +42,13 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => storage_path('logs/laravel2.log'),
+            'path' => '/usr/local/var/log/laravel_api/single.log',
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravelaa.log'),
+            'path' => '/usr/local/var/log/laravel_api/daily.log',
             'level' => 'debug',
             'days' => 14,
         ],
@@ -65,7 +65,6 @@ return [
             'level' => 'debug',
             'days' => 14,
         ],
-
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
@@ -73,7 +72,6 @@ return [
             'emoji' => ':boom:',
             'level' => 'critical',
         ],
-
         'papertrail' => [
             'driver' => 'monolog',
             'level' => 'debug',

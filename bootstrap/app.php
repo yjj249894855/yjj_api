@@ -15,6 +15,10 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+//初始化环境变量
+$env = getenv('APP_ENV') ? getenv('APP_ENV') : 'local';
+define('ENV', $env);
+$app->loadEnvironmentFrom('/config/env/.env.' . ENV);
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

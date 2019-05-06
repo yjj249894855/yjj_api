@@ -6,7 +6,7 @@ use Throwable;
 /**
  * exception 基类
  *
- * @author you.wang
+ * @author yjj
  *
  * todo 错误信息格式化
  * todo 增加对象找不到错误
