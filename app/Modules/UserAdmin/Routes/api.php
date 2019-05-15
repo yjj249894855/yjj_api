@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::get('/UserAdmin', function (Request $request) {
     // return $request->UserAdmin();
 })->middleware('auth:api');
+
+$api = app("Dingo\Api\Routing\Router");
+$api->version("v1", function ($api) {
+    $api->group(["middleware" => "auth:api"], function ($api) {
+        $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
+        $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
+    });
+});
