@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 class TobModel extends Model
 {
     //全局配置-软删除
-    const IS_DELETED = 1;
-    const IS_NOT_DELETED = 0;
+    const IS_NOT_DELETED = 1;
+    const IS_DELETED = 2;
 
 
     //默认的数据库连接
@@ -23,7 +23,7 @@ class TobModel extends Model
     protected $connection = 'mysql-tob-common';
 
     //-暂定
-    public $timestamps = true;
+    //public $timestamps = true;
 
     /**
      * TobModel constructor.

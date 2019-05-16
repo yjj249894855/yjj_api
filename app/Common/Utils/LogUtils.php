@@ -99,11 +99,7 @@ class LogUtils
         Log::channel('info')->info($message);
     }
     
-    /**
-     * catch_error
-     * 
-     * @param   $message
-     */
+
     public static function catch_error($message,$params = '')
     {
         $str = self::getThrowStr($message,$params);

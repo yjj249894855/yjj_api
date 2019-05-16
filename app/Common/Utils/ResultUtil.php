@@ -51,18 +51,22 @@ class ResultUtil
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function exception(\Exception $exception)
+    public static function exception(\Exception $exception, $msg = '')
     {
+        if (empty($msg)) {
+            $msg = $exception->getMessage();
+        }
         $code = $exception->getCode();
         if (!$code) {
             $code = -99;
         }
         $result = [
             'code' => $code,
-            'msg' => $exception->getMessage(),
+            'msg' => $msg,
             'data' => []
         ];
         if (CommonUtil::checkDebug()) {
+
             /**
              * 保存异常堆栈
              */
@@ -83,9 +87,10 @@ class ResultUtil
             /**
              * sql统计
              */
-            $result['sql'] = 'sql';
-            //$result['sql'] = DbCounter::info();
+            $result['debug']['sql'] = DbCounter::info();
         }
+
+        //var_dump($result);die;
         return response()->json($result);
     }
 
@@ -106,21 +111,20 @@ class ResultUtil
         if ($code == 0) {
             $code = -99;
         }
-        $traces = '';
-        if (CommonUtil::checkDebug()) {
-            $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        }
         $result = [
             'msg' => $msg,
             'code' => $code,
             'data' => $data,
-            'trances' => $traces
         ];
-        /**
-         * sql统计
-         */
-        $result['sql'] = 'sql';
-        //$result['sql'] = DbCounter::info();
+        if (CommonUtil::checkDebug()) {
+            /**
+             * sql统计
+             */
+            $result['debug']['sql'] = DbCounter::info();
+
+            $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $result['debug']['trances'] = $traces;
+        }
         return response()->json($result);
     }
 
