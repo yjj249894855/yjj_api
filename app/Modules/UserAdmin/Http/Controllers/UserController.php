@@ -2,14 +2,16 @@
 
 namespace App\Modules\UserAdmin\Http\Controllers;
 
+use App\Common\Base\TobController;
 use App\Common\Utils\LogUtils;
 use App\Http\Controllers\Controller;
+use App\Modules\UserAdmin\Models\UserMenu;
 use App\Modules\UserAdmin\Services\UserService;
 use Illuminate\Http\Request;
 use App\Modules\YjjTest\Exception\EmployeeException;
 use Validator;
 
-class UserController extends Controller
+class UserController extends TobController
 {
     protected $userService;
 
@@ -70,5 +72,15 @@ class UserController extends Controller
             echo '不存在字段';
         }
         dd($input);
+    }
+
+    public function menu()
+    {
+
+        $aa = UserMenu::get();
+        return $this->success($aaw);
+
+        var_dump(22);
+
     }
 }
