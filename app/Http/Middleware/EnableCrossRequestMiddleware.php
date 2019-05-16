@@ -4,20 +4,29 @@ namespace App\Http\Middleware;
 
 use Closure;
 
+/**
+ * Class EnableCrossRequestMiddleware
+ *
+ * @package App\Http\Middleware
+ */
 class EnableCrossRequestMiddleware
 {
+
     /**
-     * Handle an incoming request.
+     * notes: 跨域中间件-单独创建
+     * author: jianjun.yan
+     * date: 2019-05-16 20:27
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param         $request
+     * @param Closure $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $response = $next($request);
+
         $origin = $request->server('HTTP_ORIGIN') ? $request->server('HTTP_ORIGIN') : '';
-        var_dump($origin);die;
         $allow_origin = [
             'http://localhost:8081',//允许访问
         ];

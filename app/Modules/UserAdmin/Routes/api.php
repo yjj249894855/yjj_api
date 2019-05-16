@@ -22,5 +22,6 @@ $api->version("v1", function ($api) {
     $api->group(["middleware" => "auth:api"], function ($api) {
         $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
         $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
+        $api->post("user/menu", "App\Modules\UserAdmin\Http\Controllers\UserController@menu");
     });
 });

@@ -76,11 +76,8 @@ class UserController extends TobController
 
     public function menu()
     {
-
         $aa = UserMenu::get();
-        return $this->success($aaw);
-
-        var_dump(22);
+        return $this->success($aa);
 
     }
 }

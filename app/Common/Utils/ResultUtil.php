@@ -70,7 +70,10 @@ class ResultUtil
             /**
              * 保存异常堆栈
              */
-            $result['traces'] = $exception->getTraceAsString();
+            $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            //$result['debug']['trances'] = $traces;
+            //$result['traces'] = $exception->getTraceAsString();
+            $result['traces'] = $traces;
             $file = $exception->getFile();
             $line = $exception->getLine();
 
