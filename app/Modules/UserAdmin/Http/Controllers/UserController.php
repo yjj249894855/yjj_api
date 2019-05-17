@@ -26,6 +26,7 @@ class UserController extends TobController
     public function login(Request $request)
     {
         try {
+            var_dump($aaw);
             if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
                 $user = Auth::user();
                 $success['token'] = $user->createToken('MyApp')->accessToken;
@@ -35,6 +36,7 @@ class UserController extends TobController
             return $this->success($success);
         } catch (\Exception $e) {
             //是否记录异常日志
+            LogUtils::catch_error($e);
             return $this->failed($e);
         }
 
@@ -92,5 +94,20 @@ class UserController extends TobController
         $aa = UserMenu::get();
         return $this->success($aa);
 
+    }
+
+    //使用案例
+    public function ceshi()
+    {
+        try {
+            $res = $this->userService->ceshi();
+            var_dump($aaw);
+            $success = ['success'];
+            return $this->success($success);
+        } catch (\Exception $e) {
+            //是否记录异常日志
+            LogUtils::catch_error($e,__METHOD__);
+            return $this->failed($e);
+        }
     }
 }

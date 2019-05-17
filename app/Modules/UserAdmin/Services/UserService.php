@@ -2,6 +2,7 @@
 
 namespace App\Modules\UserAdmin\Services;
 
+use App\Modules\UserAdmin\Exception\UserAdminException;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
@@ -15,5 +16,11 @@ class UserService
     {
         $userInfo = User::where('email', $email)->first();
         return $userInfo;
+    }
+
+    public function ceshi(){
+        throw UserAdminException::error(1001001);
+        $aa =2;
+        $cc = $ddd;
     }
 }

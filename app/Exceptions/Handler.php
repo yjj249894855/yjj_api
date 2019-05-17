@@ -46,6 +46,7 @@ class Handler extends ExceptionHandler
 
     /**
      * Render an exception into an HTTP response.
+     * 未被catach的异常在这处理
      *
      * @param \Illuminate\Http\Request $request
      * @param \Exception               $exception
@@ -54,9 +55,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof TobException) {
-            $trace = $exception->getLastTrace();
-        }
         if (empty(self::$info)) {
             try {
                 self::$info = '';

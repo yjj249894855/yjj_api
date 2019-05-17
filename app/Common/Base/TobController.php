@@ -81,9 +81,7 @@ class TobController extends BaseController
      */
     public function failed($exception, $data = '')
     {
-        $msg = $exception->getMessage();
-        $code = $exception->getCode();
-        return ResultUtil::failed($msg, $code, $data);
+        return ResultUtil::failed($exception, $data);
     }
 
 }

@@ -108,8 +108,10 @@ class ResultUtil
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function failed($msg, $code = -1, $data = [])
+    public static function failed($exception, $data = '')
     {
+        $code = $exception->getCode();
+        $msg = $exception->getMessage();
         // 不允许code为0-失败场景
         if ($code == 0) {
             $code = -99;
@@ -125,10 +127,31 @@ class ResultUtil
              */
             $result['debug']['sql'] = DbCounter::info();
 
-            $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+            $traces = [];
+            $str_url = self::file_str_replace($exception->getFile());
+            $file_new_tmp = $exception->getTrace()[0]['file'];
+            $file_new = self::file_str_replace($file_new_tmp);
+            $line_new = $exception->getTrace()[0]['line'];
+            $traces['code'] = $exception->getCode();
+            $traces['message'] = $exception->getMessage();
+            $traces['file'] = $str_url;
+            $traces['line'] = $exception->getLine();
+            if ($file_new != $str_url) {
+                $traces['file_new'] = $file_new;
+                $traces['line_new'] = $line_new;
+            }
             $result['debug']['trances'] = $traces;
         }
         return response()->json($result);
     }
 
+    private static function file_str_replace($file_url)
+    {
+        $file_la = env('LARAVEL_URL', '');
+        $str_url = $file_url;
+        if ($file_la) {
+            $str_url = str_replace($file_la, '', $file_url);
+        }
+        return $str_url;
+    }
 }
