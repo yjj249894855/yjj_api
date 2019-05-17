@@ -4,12 +4,13 @@ namespace App\Modules\UserAdmin\Http\Controllers;
 
 use App\Common\Base\TobController;
 use App\Common\Utils\LogUtils;
-use App\Http\Controllers\Controller;
 use App\Modules\UserAdmin\Models\UserMenu;
 use App\Modules\UserAdmin\Services\UserService;
 use Illuminate\Http\Request;
-use App\Modules\YjjTest\Exception\EmployeeException;
+use App\Modules\UserAdmin\Exception\UserAdminException;
 use Validator;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends TobController
 {
@@ -22,11 +23,23 @@ class UserController extends TobController
         $this->userService = $userService;
     }
 
-    /**
-     * 显示文章列表.
-     *
-     * @return Response
-     */
+    public function login(Request $request)
+    {
+        try {
+            if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+                $user = Auth::user();
+                $success['token'] = $user->createToken('MyApp')->accessToken;
+            } else {
+                throw UserAdminException::error(1001001);
+            }
+            return $this->success($success);
+        } catch (\Exception $e) {
+            //是否记录异常日志
+            return $this->failed($e);
+        }
+
+    }
+
     //@return Response
     public function getUserByEmail(Request $request, $email)
     {

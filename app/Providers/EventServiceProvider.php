@@ -46,6 +46,15 @@ class EventServiceProvider extends ServiceProvider
                         function ($matches) use ($bindings, &$i) {
                             $item = isset($bindings[$i]) ? $bindings[$i] : $matches[0];
                             $i++;
+                            if (gettype($item) == 'object') {
+                                $item = get_object_vars($item);
+                                //特殊场景-待后续扩展-时间是对象
+                                if (isset($item['date'])) {
+                                    $item = $item['date'];
+                                } else {
+                                    $item = json_encode($item);
+                                }
+                            }
                             return gettype($item) == 'string' ? "'$item'" : $item;
                         }, $sql->sql);
                     //Log::debug($rawSql);-暂定-日志记录执行sql

@@ -44,7 +44,7 @@ class TobController extends BaseController
 
 
     /**
-     * notes:
+     * notes: 暂时保存-返回数据列表
      * author: jianjun.yan
      * date: 2019-05-15 20:36
      *
@@ -70,7 +70,7 @@ class TobController extends BaseController
 
 
     /**
-     * notes:
+     * notes: 失败返回
      * author: jianjun.yan
      * date: 2019-05-15 20:36
      *
@@ -79,22 +79,11 @@ class TobController extends BaseController
      *
      * @return mixed
      */
-    public function failed($msg, $code = -99)
+    public function failed($exception, $data = '')
     {
-        return ResultUtil::failed($msg, $code);
+        $msg = $exception->getMessage();
+        $code = $exception->getCode();
+        return ResultUtil::failed($msg, $code, $data);
     }
 
-    /**
-     * notes:
-     * author: jianjun.yan
-     * date: 2019-05-15 20:36
-     *
-     * @param $result
-     *
-     * @return mixed
-     */
-    public function response($result)
-    {
-        return $this->success($result);
-    }
 }

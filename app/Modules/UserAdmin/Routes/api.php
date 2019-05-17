@@ -19,6 +19,7 @@ Route::get('/UserAdmin', function (Request $request) {
 
 $api = app("Dingo\Api\Routing\Router");
 $api->version("v1", function ($api) {
+    $api->post("user/login", "App\Modules\UserAdmin\Http\Controllers\UserController@login");
     $api->group(["middleware" => "auth:api"], function ($api) {
         $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
         $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
