@@ -12,10 +12,23 @@ use Validator;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UserController
+ *
+ * @package App\Modules\UserAdmin\Http\Controllers
+ */
 class UserController extends TobController
 {
+    /**
+     * @var UserService
+     */
     protected $userService;
 
+    /**
+     * UserController constructor.
+     *
+     * @param UserService $userService
+     */
     public function __construct(
         UserService $userService
     )
@@ -23,10 +36,18 @@ class UserController extends TobController
         $this->userService = $userService;
     }
 
+    /**
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-17 17:30
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
     public function login(Request $request)
     {
         try {
-            var_dump($aaw);
             if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
                 $user = Auth::user();
                 $success['token'] = $user->createToken('MyApp')->accessToken;
@@ -42,27 +63,46 @@ class UserController extends TobController
 
     }
 
-    //@return Response
-    public function getUserByEmail(Request $request, $email)
+    /**
+     * notes: 退出接口-后续补充退出处理token
+     * author: jianjun.yan
+     * date: 2019-05-17 17:33
+     *
+     * @return mixed
+     */
+    public function logout()
     {
-        $input = $request->all();
+        $success = 'success';
+        return $this->success($success);
+    }
 
 
-        dd($input);
+    /**
+     * notes: 获取用户信息
+     * author: jianjun.yan
+     * date: 2019-05-17 17:31
+     *
+     * @return mixed
+     */
+    public function getUserInfo()
+    {
         try {
-            //throw EmployeeException::error(2000104);
-            $aa = date("Y/m/d H:i:s");
-            //var_dump($aa);
-            var_dump($aawww);
-            $res = $this->userService->getUserByEmail($email);
-            return $res;
+            $user = Auth::user();
+            return $this->success($user);
         } catch (\Exception $e) {
-            LogUtils::catch_error($e, $email);
-            $arr = LogUtils::getThrowArr($e, $email);
-            return \Response::make($arr, 500);
+            return $this->failed($e);
         }
     }
 
+    /**
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-17 17:30
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function show(Request $request)
     {
         $input = $request->all();
@@ -89,14 +129,34 @@ class UserController extends TobController
         dd($input);
     }
 
+    /**
+     * notes: 获取菜单列表-后续补充当前用户菜单权限
+     * author: jianjun.yan
+     * date: 2019-05-17 17:30
+     *
+     * @return mixed
+     */
     public function menu()
     {
-        $aa = UserMenu::get();
-        return $this->success($aa);
-
+        $menuInfo = UserMenu::get('name')->map(function ($menuInfo) {
+            return $menuInfo->name;
+        });
+        return $this->success($menuInfo);
+        //查询一个字段作为一个一位数组-上下2种方式
+//        $menuInfo = UserMenu::get('name')->toArray();
+//        $menuInfoFiled = array_pluck($menuInfo, 'name');
+//        return $this->success($menuInfoFiled);
     }
 
     //使用案例
+
+    /**
+     * notes: 测试
+     * author: jianjun.yan
+     * date: 2019-05-17 17:30
+     *
+     * @return mixed
+     */
     public function ceshi()
     {
         try {
@@ -106,7 +166,7 @@ class UserController extends TobController
             return $this->success($success);
         } catch (\Exception $e) {
             //是否记录异常日志
-            LogUtils::catch_error($e,__METHOD__);
+            LogUtils::catch_error($e, __METHOD__);
             return $this->failed($e);
         }
     }

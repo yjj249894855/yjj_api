@@ -20,10 +20,12 @@ Route::get('/UserAdmin', function (Request $request) {
 $api = app("Dingo\Api\Routing\Router");
 $api->version("v1", function ($api) {
     $api->post("user/login", "App\Modules\UserAdmin\Http\Controllers\UserController@login");
+    $api->post("user/logout", "App\Modules\UserAdmin\Http\Controllers\UserController@logout");
     $api->group(["middleware" => "auth:api"], function ($api) {
         $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
         $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
-        $api->post("user/menu", "App\Modules\UserAdmin\Http\Controllers\UserController@menu");
+        $api->get("user/menu", "App\Modules\UserAdmin\Http\Controllers\UserController@menu");
+        $api->get("user/userInfo", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserInfo");
         $api->post("user/ceshi", "App\Modules\UserAdmin\Http\Controllers\UserController@ceshi");
     });
 });
