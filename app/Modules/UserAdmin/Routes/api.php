@@ -26,6 +26,7 @@ $api->version("v1", function ($api) {
         $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
         $api->get("user/menu", "App\Modules\UserAdmin\Http\Controllers\UserController@menu");
         $api->get("user/userInfo", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserInfo");
+        $api->get("user/list", "App\Modules\UserAdmin\Http\Controllers\UserController@list");
         $api->post("user/ceshi", "App\Modules\UserAdmin\Http\Controllers\UserController@ceshi");
     });
 });

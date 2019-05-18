@@ -94,10 +94,16 @@ class UserController extends TobController
         }
     }
 
-    public function userList()
+    public function list()
     {
-        $menuInfo = User::get()->toArray();
+        $menuInfo = User::orderBy('id', 'desc')->get()->toArray();
 
+//        $menuInfo = User::get();
+//        $sorted = $menuInfo->sortByDesc('id');
+//        $sorted->values()->all();
+//        $sorted = $sorted->toArray();
+//        $sorted = array_values($sorted);
+//        return $this->success($menuInfo);
         return $this->success($menuInfo);
     }
 
