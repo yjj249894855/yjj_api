@@ -94,6 +94,13 @@ class UserController extends TobController
         }
     }
 
+    public function userList()
+    {
+        $menuInfo = User::get()->toArray();
+
+        return $this->success($menuInfo);
+    }
+
     /**
      * notes:
      * author: jianjun.yan

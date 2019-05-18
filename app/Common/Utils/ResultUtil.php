@@ -14,6 +14,8 @@ use App\Common\Support\DbCounter;
 class ResultUtil
 {
 
+    const HTTP_OK = 200;
+
     /**
      * notes:
      * author: jianjun.yan
@@ -51,7 +53,7 @@ class ResultUtil
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function exception(\Exception $exception, $msg = '')
+    public static function exception(\Exception $exception, $msg = '', $http_status = self::HTTP_OK)
     {
         if (empty($msg)) {
             $msg = $exception->getMessage();
@@ -59,6 +61,18 @@ class ResultUtil
         $code = $exception->getCode();
         if (!$code) {
             $code = -99;
+            if ($http_status == self::HTTP_OK) {
+                $http_status = 500;
+            }
+        } else {
+            //存在code判断code-判断code 前四位是否是9999
+            if (substr($code, 0, 4) == 9999) {
+                $http_status = 200;
+                $code = substr($code, 4);
+            }else{
+                $http_status = 500;
+            }
+
         }
         $result = [
             'code' => $code,
@@ -94,7 +108,7 @@ class ResultUtil
         }
 
         //var_dump($result);die;
-        return response()->json($result);
+        return response()->json($result, $http_status);
     }
 
     /**

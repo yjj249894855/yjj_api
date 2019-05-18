@@ -16,6 +16,7 @@ class Handler extends ExceptionHandler
 {
 
     static $info;
+    static $http_status = 200;
     /**
      * A list of the exception types that should not be reported.
      *
@@ -55,24 +56,32 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        //var_dump(11);
         if (empty(self::$info)) {
             try {
                 self::$info = '';
                 throw $exception;
             } catch (MethodNotAllowedHttpException $e) { // Method限制异常处理
                 self::$info = 'Only Limit ' . $e->getHeaders()['Allow'];
+                self::$http_status = 405;
             } catch (ValidationException $e) { // 表单验证自定义message输出处理
                 $customMessages = $exception->validator->getMessageBag()->getMessages();
                 self::$info = array_pop($customMessages)[0];
             } catch (NotFoundHttpException $e) { // 404异常处理
                 self::$info = 'The Request Url is 404';
-
+                self::$http_status = 404;
+            } catch (HttpException $e) {
+                self::$info = 'HttpException';
+                self::$http_status = 500;
+            } catch (ServiceUnavailableHttpException $e) {
+                self::$info = 'ServiceUnavailableHttpException';
+                self::$http_status = 500;
             } catch (\Exception $e) {
 
                 $exception = $e;
             }
         }
-        return ResultUtil::exception($exception,self::$info);
+        return ResultUtil::exception($exception, self::$info, self::$http_status);
     }
 
     /**

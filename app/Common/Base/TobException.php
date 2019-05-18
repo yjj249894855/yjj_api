@@ -39,10 +39,15 @@ class TobException extends \Exception
         $traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
         $message = self::getErrMsg($code);
-
+        if ($message == "未定义的错误码[{$code}]") {
+            $code = $code;
+        } else {
+            //内部主动异常code-返回http_status 200
+            $q = 9999;
+            $code = $q . $code;
+        }
         $exception = new self($message, $code);
         $exception->setLastTrace($traces[0]);
-        //var_dump($exception->getFile());
         return $exception;
     }
 
