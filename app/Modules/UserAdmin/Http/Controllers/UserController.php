@@ -3,6 +3,7 @@
 namespace App\Modules\UserAdmin\Http\Controllers;
 
 use App\Common\Base\TobController;
+use App\Common\Base\TopConfig;
 use App\Common\Utils\LogUtils;
 use App\Modules\UserAdmin\Models\UserMenu;
 use App\Modules\UserAdmin\Services\UserService;
@@ -94,9 +95,22 @@ class UserController extends TobController
         }
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        $menuInfo = User::orderBy('id', 'desc')->get()->toArray();
+        $where = [];
+        if ($request->get('name')) {
+            $where['name'] = $request->get('name');
+        }
+        if ($request->get('email')) {
+            $where['email'] = $request->get('email');
+        }
+        $limit = TopConfig::PAGE_LIMIT;
+        if ($request->get('limit')) {
+            $limit = $request->get('limit');
+        }
+        $menuInfo = User::where($where)->orderBy('id', 'desc')->paginate($limit);
+
+        //$menuInfo = User::orderBy('id', 'desc')->get()->toArray();
 
 //        $menuInfo = User::get();
 //        $sorted = $menuInfo->sortByDesc('id');
