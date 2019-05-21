@@ -6,16 +6,29 @@ use Illuminate\Http\Request;
 use App\Common\Base\TobController;
 use App\Common\Base\TopConfig;
 use App\Common\Utils\LogUtils;
-use App\Modules\UserAdmin\Models\UserMenu;
+use App\Modules\UserAdmin\Models\User;
 use App\Modules\UserAdmin\Services\UserService;
 use App\Modules\UserAdmin\Exception\UserAdminException;
-use Validator;
-use App\User;
-use Illuminate\Support\Facades\Auth;
 
+
+/**
+ * Class UserController
+ *
+ * @package App\Modules\UserAdmin\Http\Controllers
+ */
 class UserController extends TobController
 {
 
+
+    /**
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-21 16:01
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
     public function index(Request $request)
     {
         $where = [];
@@ -39,37 +52,33 @@ class UserController extends TobController
         return $this->success($menuInfo);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-21 16:02
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
      */
     public function store(Request $request)
     {
         //
     }
 
+
     /**
-     * Display the specified resource.
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-21 16:01
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     *
+     * @return mixed
      */
     public function show($id)
     {
         try {
-            $user = Auth::user();
+            $user = User::where(['id' => $id])->first();
             return $this->success($user);
         } catch (\Exception $e) {
             return $this->failed($e);
@@ -77,21 +86,11 @@ class UserController extends TobController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -102,7 +101,8 @@ class UserController extends TobController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

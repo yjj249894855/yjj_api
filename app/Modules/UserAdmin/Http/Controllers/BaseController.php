@@ -2,6 +2,7 @@
 
 namespace App\Modules\UserAdmin\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Common\Base\TobController;
 use App\Modules\UserAdmin\Models\UserMenu;
 
@@ -13,6 +14,26 @@ use App\Modules\UserAdmin\Models\UserMenu;
 class BaseController extends TobController
 {
 
+    /**
+     * api: /api/base/user-info
+     *
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-21 15:51
+     *
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function userInfo()
+    {
+        try {
+            $user = Auth::user();
+            return $this->success($user);
+        } catch (\Exception $e) {
+            return $this->failed($e);
+        }
+    }
     /**
      * api: /api/base/menu
      *
