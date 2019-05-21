@@ -19,14 +19,12 @@ Route::get('/UserAdmin', function (Request $request) {
 
 $api = app("Dingo\Api\Routing\Router");
 $api->version("v1", function ($api) {
-    $api->post("user/login", "App\Modules\UserAdmin\Http\Controllers\UserController@login");
-    $api->post("user/logout", "App\Modules\UserAdmin\Http\Controllers\UserController@logout");
+    $api->post("main/login", "App\Modules\UserAdmin\Http\Controllers\MainController@login");
+    $api->post("main/logout", "App\Modules\UserAdmin\Http\Controllers\MainController@logout");
     $api->group(["middleware" => "auth:api"], function ($api) {
+        $api->get("base/menu", "App\Modules\UserAdmin\Http\Controllers\BaseController@menu");
         $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
-        $api->post("user/show", "App\Modules\UserAdmin\Http\Controllers\UserController@show");
-        $api->get("user/menu", "App\Modules\UserAdmin\Http\Controllers\UserController@menu");
-        $api->get("user/userInfo", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserInfo");
-        $api->get("user/list", "App\Modules\UserAdmin\Http\Controllers\UserController@list");
         $api->post("user/ceshi", "App\Modules\UserAdmin\Http\Controllers\UserController@ceshi");
+        $api->resource('user', 'App\Modules\UserAdmin\Http\Controllers\UserController');
     });
 });

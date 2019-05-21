@@ -7,10 +7,13 @@ use App\Common\Utils\ResultUtil;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Log;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -70,16 +73,18 @@ class Handler extends ExceptionHandler
             } catch (NotFoundHttpException $e) { // 404异常处理
                 self::$info = 'The Request Url is 404';
                 self::$http_status = 404;
-            } catch (HttpException $e) {
-                self::$info = 'HttpException';
-                self::$http_status = 500;
             } catch (ServiceUnavailableHttpException $e) {
                 self::$info = 'ServiceUnavailableHttpException';
                 self::$http_status = 500;
+            } catch (BadRequestHttpException $e) {
+                self::$info = 'Accept header params error';
+                self::$http_status = 400;
             } catch (\Exception $e) {
 
                 $exception = $e;
             }
+
+
         }
         return ResultUtil::exception($exception, self::$info, self::$http_status);
     }
