@@ -26,6 +26,8 @@ $api->version("v1", function ($api) {
         $api->get("base/menu", "App\Modules\UserAdmin\Http\Controllers\BaseController@menu");
 //        $api->get("user/email/{email}", "App\Modules\UserAdmin\Http\Controllers\UserController@getUserByEmail");
 //        $api->post("user/ceshi", "App\Modules\UserAdmin\Http\Controllers\UserController@ceshi");
-        $api->resource('user', 'App\Modules\UserAdmin\Http\Controllers\UserController');
+        $api->resource('user', 'App\Modules\UserAdmin\Http\Controllers\UserController',['parameters' => [
+            'user' => 'id'
+        ]]);
     });
 });
