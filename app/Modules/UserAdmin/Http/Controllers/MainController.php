@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Common\Base\TobController;
 use App\Common\Utils\LogUtils;
 use App\Modules\UserAdmin\Exception\UserAdminException;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class MainController

@@ -19,7 +19,6 @@ use App\Modules\UserAdmin\Exception\UserAdminException;
 class UserController extends TobController
 {
 
-
     /**
      * notes:
      * author: jianjun.yan
@@ -31,7 +30,7 @@ class UserController extends TobController
      */
     public function index(Request $request)
     {
-        $where = [];
+        $where['is_delete'] = TopConfig::IS_NOT_DELETED;
         if ($request->get('name')) {
             $where['name'] = $request->get('name');
         }
@@ -85,29 +84,50 @@ class UserController extends TobController
         }
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-22 10:28
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param Request $request
+     * @param         $id
      *
-     * @return \Illuminate\Http\Response
+     * @throws \App\Common\Base\TobException
+     * @return mixed
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::where(['id' => $id])->first();
+        if (empty($user)) {
+            throw UserAdminException::error(1001001);
+        }else{
+            $user->name = $request->get('name');
+            $user->save();
+        }
+        return $this->success('success');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * notes:
+     * author: jianjun.yan
+     * date: 2019-05-22 09:47
      *
-     * @param int $id
+     * @param $id
      *
-     * @return \Illuminate\Http\Response
+     * @throws \App\Common\Base\TobException
+     * @return mixed
      */
     public function destroy($id)
     {
-        //
+        $user = User::where(['id' => $id])->first();
+        if (empty($user)) {
+            throw UserAdminException::error(1001001);
+        } else {
+            $user->is_delete = TopConfig::IS_DELETED;
+            $user->save();
+        }
+        return $this->success('success');
     }
 
 }
