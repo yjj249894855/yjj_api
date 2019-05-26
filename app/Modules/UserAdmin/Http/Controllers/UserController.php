@@ -9,6 +9,7 @@ use App\Common\Utils\LogUtils;
 use App\Modules\UserAdmin\Models\User;
 use App\Modules\UserAdmin\Services\UserService;
 use App\Modules\UserAdmin\Exception\UserAdminException;
+use App\Modules\UserAdmin\Http\Requests\UserRequest;
 
 
 /**
@@ -53,18 +54,34 @@ class UserController extends TobController
 
 
     /**
-     * notes:
-     * author: jianjun.yan
-     * date: 2019-05-21 16:02
+     * 注册用户
      *
-     * @param Request $request
+     * 使用 `name` 和 `password` 注册用户。
+     *
+     * @Post("/api/user/")
+     * @Versions({"v1"})
+     * @Request({"name": "foo", "password": "bar"})
+     * @Response(200, body={"id": 10, "name": "foo"})
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+        $success['token'] = $user->createToken('MyApp')->accessToken;
+        $success['name'] = $user->name;
+        return $this->success($success);
     }
 
-
+    /**
+     * notes: 创建用户
+     * author: jianjun.yan
+     * date: 2019-05-23 22:18
+     *
+     * @param UserRequest $request
+     *
+     * @return mixed
+     */
     /**
      * notes:
      * author: jianjun.yan
@@ -96,12 +113,13 @@ class UserController extends TobController
      * @throws \App\Common\Base\TobException
      * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
+        dd($request->get('name'));
         $user = User::where(['id' => $id])->first();
         if (empty($user)) {
             throw UserAdminException::error(1001001);
-        }else{
+        } else {
             $user->name = $request->get('name');
             $user->save();
         }

@@ -22,4 +22,12 @@ class CommonUtil
     {
         return env('APP_DEBUG', false);
     }
+
+    public static function getCurrentAction()
+    {
+        $action = request()->route()->getAction()['uses'];
+        list($class, $method) = explode('@', $action);
+        return $method;
+        //return ['controller' => $class, 'method' => $method];
+    }
 }
