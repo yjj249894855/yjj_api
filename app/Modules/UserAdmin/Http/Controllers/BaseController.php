@@ -2,9 +2,11 @@
 
 namespace App\Modules\UserAdmin\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Common\Base\TobController;
 use App\Modules\UserAdmin\Models\UserMenu;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class BaseController
@@ -34,6 +36,7 @@ class BaseController extends TobController
             return $this->failed($e);
         }
     }
+
     /**
      * api: /api/base/menu
      *
@@ -53,5 +56,29 @@ class BaseController extends TobController
 //        $menuInfo = UserMenu::get('name')->toArray();
 //        $menuInfoFiled = array_pluck($menuInfo, 'name');
 //        return $this->success($menuInfoFiled);
+    }
+
+    public function upload(Request $request)
+    {
+        $file = $request->file('file');
+        //判断文件是否上传成功
+        if ($file->isValid()) {
+            //原文件名
+            $originalName = $file->getClientOriginalName();
+            //扩展名
+            $ext = $file->getClientOriginalExtension();
+            //MimeType
+            $type = $file->getClientMimeType();
+            //临时绝对路径
+            $realPath = $file->getRealPath();
+            $filename = uniqid() . '.' . $ext;
+            $bool = Storage::disk('uploads')->put($filename, file_get_contents($realPath));
+            //判断是否上传成功
+            if ($bool) {
+                echo 'uploads/'.date('Ymd').'/'.$filename;
+            } else {
+                echo 'fail';
+            }
+        }
     }
 }

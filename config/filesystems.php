@@ -64,6 +64,13 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        //自定义
+        'uploads' => [
+            'driver' => 'local',
+            //'root' => storage_path('app/uploads'),
+            'root' => public_path('uploads/'.date('Ymd')),
+        ],
+
     ],
 
 ];
