@@ -42,26 +42,26 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => '/usr/local/var/log/laravel_api/single.log',
+            'path' => '/var/www/html/log/single.log',
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => '/usr/local/var/log/laravel_api/daily.log',
+            'path' => '/var/www/html/log/daily.log',
             'level' => 'debug',
             'days' => 14,
         ],
 
         'info' => [
             'driver' => 'daily',
-            'path' => '/usr/local/var/log/laravel_api/info.log',
+            'path' => '/var/www/html/log/info.log',
             'level' => 'debug',
             'days' => 14,
         ],
         'catch_error' => [
             'driver' => 'daily',
-            'path' => '/usr/local/var/log/laravel_api/catch_error.log',
+            'path' => '/var/www/html/log/catch_error.log',
             'level' => 'debug',
             'days' => 14,
         ],
